@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: authenticator-db
+  labels:
+    app: authenticator-db
+spec:
+  containers:
+    - name: authenticator-db
+      image: postgres
+      imagePullPolicy: "IfNotPresent"
+      envFrom:
+        - configMapRef:
+            name: authenticator-db
+      ports:
+        - containerPort: 5432

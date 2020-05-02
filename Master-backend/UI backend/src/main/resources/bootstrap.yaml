@@ -1,0 +1,36 @@
+spring:
+  liquibase:
+    enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:32537/finance
+    username: ENC(50x2b3EImsjNvj2siYjHxXLYptitp/9u)
+    password: ENC(slHVxZ0XcGNDhTXZALwkHFRs55kXMVoH)
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  profiles:
+    active: dev
+  application:
+    name: finance-client
+  cloud:
+    config:
+      uri: http://localhost:8888
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+server:
+  port: 8082
+  servlet:
+    context-path: /api
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /

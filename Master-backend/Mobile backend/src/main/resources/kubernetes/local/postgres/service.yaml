@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: authenticator-db
+  labels:
+    app: authenticator-db
+spec:
+  type: NodePort
+  selector:
+    app: authenticator-db
+  ports:
+    - name: authenticator-db
+      port: 5432
+      nodePort: 32538

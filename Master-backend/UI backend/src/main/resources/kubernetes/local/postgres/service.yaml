@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: finance-db
+  labels:
+    app: finance-db
+spec:
+  type: NodePort
+  selector:
+    app: finance-db
+  ports:
+    - name: finance-db
+      port: 5432
+      nodePort: 32537

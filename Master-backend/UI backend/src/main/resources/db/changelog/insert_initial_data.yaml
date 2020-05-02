@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - logicalFilePath: insert_initial_data.yaml
+  - changeSet:
+      id: initalData
+      author: David Vuletas
+      sql: "insert into users (email, password, verified) values ('admin@gmail.com', '$2y$12$WXaw81FyLTQGyOYlrqekJe3msQCduezuYpcxkrcuigjCptVeHqZam', TRUE)"

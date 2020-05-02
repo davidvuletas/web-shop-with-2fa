@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authenticator-db
+  labels:
+    app: authenticator-db
+data:
+  POSTGRES_DB: authenticator
+  POSTGRES_USER: dbAuthenticator
+  POSTGRES_PASSWORD: dbPassword

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: finance-db
+  labels:
+    app: finance-db
+data:
+  POSTGRES_DB: finance
+  POSTGRES_USER: dbFinance
+  POSTGRES_PASSWORD: dbPassword

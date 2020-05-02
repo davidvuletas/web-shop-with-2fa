@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - logicalFilePath: create_inital_schema.yaml
+  - changeSet:
+      id: createDatabase
+      author: David Vuletas
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(30)
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(60)
+              - column:
+                  name: name
+                  type: varchar(30)
+              - column:
+                  name: lastname
+                  type: varchar(40)
+              - column:
+                  name: two_factor_auth
+                  type: boolean
+                  defaultValue: false
+              - column:
+                  name: verified
+                  type: boolean
+                  defaultValue: false
+              - column:
+                  name: role
+                  type: varchar(30)
+        - createTable:
+            tableName: account
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(30)
+              - column:
+                  name: balance
+                  type: float(10)

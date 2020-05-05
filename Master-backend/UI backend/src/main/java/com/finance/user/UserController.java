@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @RestController
 @AllArgsConstructor
-@CrossOrigin(value = "http://localhost:8080", exposedHeaders = "JWT")
+@CrossOrigin(value = "https://localhost:8080", exposedHeaders = "JWT")
 @RequestMapping("/users")
 public class UserController {
 

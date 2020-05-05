@@ -39,7 +39,7 @@ const COLOR_CODES = {
   }
 };
 
-const TIME_LIMIT = 100;
+const TIME_LIMIT = 10;
 import { eventBus } from "../../main"
 
 export default {
@@ -99,6 +99,10 @@ export default {
 
   mounted() {
     this.startTimer();
+    eventBus.$on('regenerate', val => {
+      this.startTimer();
+    });
+
   },
 
   methods: {
@@ -107,7 +111,6 @@ export default {
       this.timePassed  = 0;
       this.timerInterval = null;
       eventBus.$emit('timerFinished', true);
-      this.startTimer();
     },
 
     startTimer() {
@@ -120,8 +123,8 @@ export default {
 <style lang="scss">
 .base-timer {
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
 
   &__svg {
     transform: scaleX(-1);
@@ -161,8 +164,8 @@ export default {
 
   &__label {
     position: absolute;
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
     top: 0;
     display: flex;
     align-items: center;

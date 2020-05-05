@@ -28,9 +28,22 @@ server:
   port: 8082
   servlet:
     context-path: /api
+  ssl:
+    key-store: keystore.jks
+    key-store-type: JKS
+    key-store-password: master20202fa
+    key-alias: finance-backend
+
+    trust-store: truststore.jks
+    trust-store-password: master20202fa
+
+    enabled-protocols: TLSv1.3
+    client-auth: want
 management:
   endpoints:
     web:
       exposure:
         include: "*"
       base-path: /
+
+

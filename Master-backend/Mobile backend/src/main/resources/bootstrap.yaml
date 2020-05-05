@@ -28,9 +28,23 @@ server:
   port: 8081
   servlet:
     context-path: /api
+  ssl:
+    key-store: keystore.jks
+    key-store-type: JKS
+    key-store-password: master20202fa
+    key-alias: authenticator-backend
+
+    trust-store: truststore.jks
+    trust-store-password: master20202fa
+
+    enabled-protocols: TLSv1.2
+    client-auth: want
 management:
   endpoints:
     web:
       exposure:
         include: "*"
       base-path: /
+logging:
+  level:
+    root: debug

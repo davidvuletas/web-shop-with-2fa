@@ -6,13 +6,18 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueResource from 'vue-resource'
+import VueNativeSock from 'vue-native-websocket'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+Vue.use(VueNativeSock, 'ws://192.168.0.12:9090', {
+  reconnection: true, // (Boolean) whether to reconnect automatically (false)
+  reconnectionAttempts: 5,
+})
 
-Vue.http.options.root = 'http://localhost:8090/api/';
+Vue.http.options.root = 'https://localhost:8082/api/';
 
 Vue.http.interceptors.push((request, next) => {
   if(localStorage.getItem('jwtToken') != null) {

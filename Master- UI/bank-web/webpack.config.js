@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+const fs = require('fs');
 
 module.exports = {
   entry: './src/main.js',
@@ -55,7 +56,12 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    https: {
+      key: fs.readFileSync('./certs/finance_ui_no.pkcs8'),
+      cert: fs.readFileSync('./certs/finance_ui.cer'),
+      ca: fs.readFileSync('./certs/ca_root.cer'),
+    }
   },
   performance: {
     hints: false

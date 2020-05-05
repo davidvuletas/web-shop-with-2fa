@@ -1,4 +1,4 @@
-package com.finance.user;
+package com.authenticator.account;
 
 import lombok.Getter;
 

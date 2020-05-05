@@ -1,6 +1,8 @@
 package com.finance.qrcode;
 
 import com.finance.config.security.EncryptionAlgorithm;
+import com.finance.user.User;
+import com.finance.user.UserRepository;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -21,10 +23,12 @@ public class QRCodeService {
 
     private final QRCodeWriter qrCodeWriter = new QRCodeWriter();
 
+    private final UserRepository userRepository;
 
     @SneakyThrows
     public String generateQRCode(String email) {
-        QRCode valueOfQRCode = QRCode.builder().email(email).build();
+        User user = userRepository.findUserByEmail(email);
+        QRCode valueOfQRCode = QRCode.builder().email(email).role(user.getRole()).build();
         valueOfQRCode.generateNewTime();
         String data = EncryptionAlgorithm.encryptData(valueOfQRCode.asString());
         BitMatrix matrix = null;

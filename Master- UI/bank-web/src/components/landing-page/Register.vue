@@ -54,8 +54,8 @@
           id="radio-group-2"
           name="radio-sub-component"
         >
-          <b-form-radio name="yes-factor" value="true">Use</b-form-radio>
-          <b-form-radio name="no-factor" value="false">Not use</b-form-radio>
+          <b-form-radio name="yes-factor" value=true>Use</b-form-radio>
+          <b-form-radio name="no-factor" value=false>Not use</b-form-radio>
         </b-form-radio-group>
       </b-form-group>
       <b-row>
@@ -82,11 +82,11 @@ export default {
         password: "",
         name: "",
         lastName: "",
-        twoFactorAuth: false,
+        twoFactorAuth: "false",
         role: "USER"
       },
       roles: [
-        { value: "IT_SUPPORT", text: "Operation support" },
+        { value: "ADMIN", text: "Admin" },
         { value: "OPERATOR", text: "Operator" },
         { value: "CHIEF", text: "Chief" },
         { value: "USER", text: "Regular user" }
@@ -98,7 +98,9 @@ export default {
       this.$http.post("users/register", this.registrationForm).then(
         response => {
           let mailEncrypted = btoa(this.registrationForm.email);
+          if(this.registrationForm.twoFactorAuth === "true") {
           this.$router.push({ name: 'qr-code', params: { name: mailEncrypted } });
+          }
         },
         error => {
           console.log(error);

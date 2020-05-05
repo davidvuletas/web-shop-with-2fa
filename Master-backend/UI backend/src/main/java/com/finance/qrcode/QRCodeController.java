@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(value = "http://localhost:8080", exposedHeaders = "JWT")
+@CrossOrigin(value = "https://localhost:8080")
 @RequestMapping("/qr-code")
 public class QRCodeController {
 

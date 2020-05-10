@@ -25,7 +25,7 @@ jasypt:
     algorithm: PBEWithMD5AndDES
     iv-generator-classname: org.jasypt.iv.NoIvGenerator
 server:
-  port: 8081
+  port: 8084
   servlet:
     context-path: /api
   ssl:
@@ -38,7 +38,7 @@ server:
     trust-store-password: master20202fa
 
     enabled-protocols: TLSv1.2
-    client-auth: want
+    client-auth: none
 management:
   endpoints:
     web:

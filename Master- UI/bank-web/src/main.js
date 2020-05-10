@@ -12,10 +12,7 @@ Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-Vue.use(VueNativeSock, 'ws://192.168.0.12:9090', {
-  reconnection: true, // (Boolean) whether to reconnect automatically (false)
-  reconnectionAttempts: 5,
-})
+
 
 Vue.http.options.root = 'https://localhost:8082/api/';
 

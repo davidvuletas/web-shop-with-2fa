@@ -35,15 +35,15 @@ import axios from "axios";
 import { eventBus } from "../App";
 import { api } from "../App";
 
-//import { fetchApi } from "react-native-ssl-pinning";
- import RNFetchBlob from 'rn-fetch-blob'
+import { fetch } from "react-native-ssl-pinning";
+import pinch from "react-native-pinch-new";
 
 export default {
   components: { "accounts-list": AccountList },
   data() {
     return {
       api: axios.create({
-        baseURL: "https://192.168.0.12:8081/api/",
+        baseURL: "https://192.168.0.12:8084/api/",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Accept: "application/json"
@@ -65,41 +65,18 @@ export default {
       this.navigation.navigate("QRReader");
     },
     getAllRegisteredAccounts() {
-      /*this.api
-        .get("info")
-        .then(response => console.log(response)) //(this.accounts = response.data))
-        .catch(function(e) {
-          let errorObject = JSON.parse(JSON.stringify(e));
-          console.log(errorObject);
-        });*/
-
-      /*fetchApi("https://192.168.0.12:8081/api/account", {
-        method: "GET",
-        timeoutInterval: 1000, // milliseconds
-        // your certificates array (needed only in android) ios will pick it automatically
+      fetch("https://192.168.0.12:8084/api/account", {
+        method: "get",
+        timeoutInterval: 10000, // timeout after 10 seconds
+        //disableAllSecurity: true,
         sslPinning: {
-          certs: ['ca_root'] // your certificates name (without extension), for example cert1.cer, cert2.cer
-        },
-        headers: {
-          Accept: "application/json; charset=utf-8",
-          "Access-Control-Allow-Origin": "*"
+          certs: ["authenticator_ui"] // cert file name without the `.cer`
         }
       })
-        .then(response => {
-          console.log(response);
-        })
+        .then(res => console.log(`We got your response! Response - ${res}`))
         .catch(err => {
-          console.log(err);
-        });*/
-      /*RNFetchBlob.config({
-        trusty: true
-      }).fetch('GET', 'https://192.168.0.12:8081/api/account')
-      .then(response => {
-          console.log(response);
-        })
-        .catch(err => {
-          console.log(err);
-        })*/
+          console.log(err);//`Whoopsy doodle! Error - ${JSON.stringify(err)}`);
+        });
     }
   },
   created() {

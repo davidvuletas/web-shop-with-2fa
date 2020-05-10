@@ -33,25 +33,14 @@
 import AccountList from "../components/AccountsList";
 import axios from "axios";
 import { eventBus } from "../App";
-import { api } from "../App";
 
-import { fetch } from "react-native-ssl-pinning";
-import pinch from "react-native-pinch-new";
+import RNFetchBlob from "rn-fetch-blob";
+import {NetworkInfo} from 'react-native-network-info';
 
 export default {
   components: { "accounts-list": AccountList },
   data() {
     return {
-      api: axios.create({
-        baseURL: "https://192.168.0.12:8084/api/",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          Accept: "application/json"
-        },
-        agentOptions: {
-          rejectUnauthorized: false
-        }
-      }),
       accounts: []
     };
   },
@@ -65,17 +54,13 @@ export default {
       this.navigation.navigate("QRReader");
     },
     getAllRegisteredAccounts() {
-      fetch("https://192.168.0.12:8084/api/account", {
-        method: "get",
-        timeoutInterval: 10000, // timeout after 10 seconds
-        //disableAllSecurity: true,
-        sslPinning: {
-          certs: ["authenticator_ui"] // cert file name without the `.cer`
-        }
+      RNFetchBlob.config({
+        trusty: true
       })
-        .then(res => console.log(`We got your response! Response - ${res}`))
+        .fetch("GET", "https://192.168.0.13:8084/api/account")
+        .then(res => this.accounts = JSON.parse(res.data))
         .catch(err => {
-          console.log(err);//`Whoopsy doodle! Error - ${JSON.stringify(err)}`);
+          console.log(err); //`Whoopsy doodle! Error - ${JSON.stringify(err)}`);
         });
     }
   },

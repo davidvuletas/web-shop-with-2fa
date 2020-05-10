@@ -32,13 +32,13 @@ server:
     key-store: keystore.jks
     key-store-type: JKS
     key-store-password: master20202fa
-    key-alias: authenticator-backend
+    key-alias: auth_ui_13
 
     trust-store: truststore.jks
     trust-store-password: master20202fa
 
     enabled-protocols: TLSv1.2
-    client-auth: none
+    client-auth: want
 management:
   endpoints:
     web:

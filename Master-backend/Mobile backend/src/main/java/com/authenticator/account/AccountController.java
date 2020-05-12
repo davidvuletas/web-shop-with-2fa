@@ -5,6 +5,7 @@ import com.authenticator.config.security.DecryptionAlgorithm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,11 +18,15 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     private final AccountService accountService;
+    private final SimpMessagingTemplate simpMessagingTemplate;
+    private final String destination = "/topic/messages/";
 
     @PostMapping("/register")
     public void registerAccount(@RequestBody String qrCodeData) throws JsonProcessingException {
         String data = DecryptionAlgorithm.decryptData(qrCodeData);
-        accountService.createAccountByQrCodeData(data);
+        Account account = accountService.createAccountByQrCodeData(data);
+        simpMessagingTemplate.convertAndSend(destination + account.getEmail(),"Verified");
+        log.info("SEND!!!");
         log.info(data);
     }
 
@@ -32,7 +37,7 @@ public class AccountController {
                 .id(acc.getId())
                 .email(acc.getEmail())
                 .role(acc.getRole().getRoleName())
-                .dateOfCreation(acc.getGeneratedTime()).
+                .lastActivity(acc.getLastActivity()).
                         build()).collect(Collectors.toList());
     }
 

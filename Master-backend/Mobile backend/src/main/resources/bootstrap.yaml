@@ -32,7 +32,7 @@ server:
     key-store: keystore.jks
     key-store-type: JKS
     key-store-password: master20202fa
-    key-alias: auth_ui_13
+    key-alias: authenticator-backend
 
     trust-store: truststore.jks
     trust-store-password: master20202fa
@@ -47,4 +47,4 @@ management:
       base-path: /
 logging:
   level:
-    root: debug
+    root: info

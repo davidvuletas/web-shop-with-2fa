@@ -6,13 +6,11 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VueResource from 'vue-resource'
-import VueNativeSock from 'vue-native-websocket'
 
 Vue.use(VueResource);
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-
 
 Vue.http.options.root = 'https://localhost:8082/api/';
 

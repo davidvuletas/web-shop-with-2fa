@@ -8,14 +8,14 @@
 <script>
 import Vue from "vue-native-core";
 import { VueNativeBase } from "native-base";
-//import { AppLoading } from "expo";
 import * as Font from "expo-font";
-
+import VueNativeSock from "vue-native-websocket";
+import { host } from "../shared";
 import App from "../App.vue";
 
 // registering all native-base components to the global scope of the Vue
 Vue.use(VueNativeBase);
-
+Vue.use(VueNativeSock, "ws://" + host + ":9090");
 export default {
   components: { App },
   data() {

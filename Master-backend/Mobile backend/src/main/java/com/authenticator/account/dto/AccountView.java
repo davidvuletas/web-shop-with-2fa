@@ -11,5 +11,5 @@ public class AccountView {
     private Long id;
     private String email;
     private String role;
-    private String dateOfCreation;
+    private String lastActivity;
 }

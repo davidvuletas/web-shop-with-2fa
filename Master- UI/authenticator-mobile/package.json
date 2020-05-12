@@ -28,7 +28,8 @@
     "rn-fetch-blob": "^0.12.0",
     "vue-native-core": "^0.1.4",
     "vue-native-helper": "^0.1.4",
-    "vue-native-router": "^0.1.1"
+    "vue-native-router": "^0.1.1",
+    "vue-native-websocket": "^2.0.14"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",

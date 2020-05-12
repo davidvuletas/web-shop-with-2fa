@@ -24,7 +24,7 @@ public class Account {
     @Enumerated
     private Role role;
 
-    @Column(name = "generated_time")
-    private String generatedTime;
+    @Column(name = "last_activity")
+    private String lastActivity;
 
 }

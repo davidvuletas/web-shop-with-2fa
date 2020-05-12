@@ -20,7 +20,7 @@ databaseChangeLog:
                   constraints:
                     unique: true
               - column:
-                  name: generated_time
+                  name: last_activity
                   type: varchar(30)
               - column:
                   name: role

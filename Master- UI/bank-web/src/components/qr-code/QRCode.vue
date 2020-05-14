@@ -54,12 +54,28 @@ export default {
       this.stompClient.connect(
         {},
         frame => {
-          this.stompClient.subscribe(TOPIC_URL + atob(this.email), tick => {
-            this.displayToast();
-            setTimeout(() => {
-              this.$router.push({ name: "landing-page" });
-            }, 2000);
-          });
+          this.stompClient.subscribe(
+            TOPIC_URL + atob(this.email) + "/register",
+            tick => {
+              this.displayToast();
+              this.$http.put("users/verified/" + atob(this.email)).then(
+                response => {
+                  console.log(response);
+                  this.$router.push({ name: "landing-page" });
+                },
+                error => console.log(error)
+              );
+            }
+          );
+          this.stompClient.subscribe(
+            TOPIC_URL + atob(this.email) + "/login",
+            tick => {
+              this.displayToast();
+              setTimeout(() => {
+                this.$router.push({ name: "account-page" });
+              }, 2000);
+            }
+          );
         },
         error => {
           console.log(error);

@@ -1,5 +1,6 @@
 package com.finance.user;
 
+import com.finance.exception.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +12,14 @@ public class UserService {
 
     public User createUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User getUserByMail(String mail) { return userRepository.findUserByEmail(mail);}
+
+    public void isUserVerified(String email) {
+        User user = userRepository.findUserByEmail(email);
+        if(!user.isVerified() && user.isTwoFactorAuth()) {
+            throw new NotAuthorizedException("Your account is not verified!\n Please add account to your application.");
+        }
     }
 }

@@ -9,6 +9,7 @@ import javax.validation.constraints.Max;
 @Table(name = "users")
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Setter
 @Getter
 @Builder
 public class User {

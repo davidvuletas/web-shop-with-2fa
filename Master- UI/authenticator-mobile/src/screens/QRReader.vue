@@ -84,45 +84,102 @@ export default {
     handleBarCodeScanned(e) {
       if (!this.qrCode) {
         this.qrCode = e.data;
-        let scopedBack = this.goBack;
-        let scopedResetQRCode = this.resetQRCode;
-        RNFetchBlob.config({
-          trusty: true
+        if (this.navigation.state.params.type === "login") {
+          const mail = this.navigation.state.params.mail;
+          this.validateAccountForQRCode(mail);
+        } else {
+          this.registerAccountForQRCode();
+        }
+      }
+    },
+    goBack() {
+      this.navigation.navigate("Home");
+      eventBus.$emit("backToHome", true);
+    },
+    resetQRCode() {
+      this.qrCode = null;
+    },
+    registerAccountForQRCode() {
+      let scopedResetQRCode = this.resetQRCode;
+      let scopedBack = this.goBack;
+      RNFetchBlob.config({
+        trusty: true
+      })
+        .fetch(
+          "POST",
+          "https://" + host + ":8084/api/account/register",
+          {
+            "Content-Type": "application/json"
+          },
+          this.qrCode
+        )
+        .then(function(data) {
+           if ([401, 404, 400, 500].indexOf(data.respInfo.status) > -1) {
+            Alert.alert(
+              "Failed",
+              JSON.parse(data.data).message,
+              [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+              { cancelable: false }
+            );
+          } else {
+          Alert.alert(
+            "Success",
+            "QR code scanned successfully!",
+            [{ text: "Ok", onPress: () => scopedBack() }],
+            { cancelable: false }
+          );
+          }
         })
-          .fetch(
-            "POST",
-            "https://" + host + ":8084/api/account/register",
-            {
-              "Content-Type": "application/json"
-            },
-            this.qrCode
-          )
-          .then(function(data) {
+        .catch(function(error) {
+          console.log(error.response.message);
+          Alert.alert(
+            "Failed",
+            "Connection with server is not working",
+            [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+            { cancelable: false }
+          );
+        });
+    },
+    validateAccountForQRCode(mail) {
+      let scopedResetQRCode = this.resetQRCode;
+      let scopedBack = this.goBack;
+      RNFetchBlob.config({
+        trusty: true
+      })
+        .fetch(
+          "POST",
+          "https://" + host + ":8084/api/account/checkAccount/" + mail,
+          {
+            "Content-Type": "application/json"
+          },
+          this.qrCode
+        )
+        .then(function(data) {
+          if ([401, 404, 400, 500].indexOf(data.respInfo.status) > -1) {
+            Alert.alert(
+              "Failed",
+              JSON.parse(data.data).message,
+              [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+              { cancelable: false }
+            );
+          } else {
             Alert.alert(
               "Success",
               "QR code scanned successfully!",
               [{ text: "Ok", onPress: () => scopedBack() }],
               { cancelable: false }
             );
-          })
-          .catch(function(error) {
-            console.log(error.response.message);
-            Alert.alert(
-              "Failed",
-              error.response.data.message,
-              [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
-              { cancelable: false }
-            );
-          });
-      }
-    },
-    goBack() {
-      this.navigation.navigate("Home");
-      this.$socket.send('test')
-      eventBus.$emit("backToHome", true);
-    },
-    resetQRCode() {
-      this.qrCode = null;
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response.message);
+          Alert.alert(
+            "Failed",
+            "Connection with server is not working",
+            [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+            { cancelable: false }
+          );
+        });
     }
   },
   props: {

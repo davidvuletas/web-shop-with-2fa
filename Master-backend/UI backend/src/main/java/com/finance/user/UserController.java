@@ -36,9 +36,10 @@ public class UserController {
             authenticate(loginInformation.getEmail(), loginInformation.getPassword());
             final UserDetails userDetails = userDetailsService
                     .loadUserByUsername(loginInformation.getEmail());
+            userService.isUserVerified(loginInformation.getEmail());
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add("JWT", jwtTokenUtil.generateToken(userDetails));
-            return ResponseEntity.ok().headers(httpHeaders).build();
+            return ResponseEntity.ok().headers(httpHeaders).body(userService.getUserByMail(loginInformation.getEmail()));
         } catch (Exception e) {
             log.error("Failed login. Message: " + e.getMessage());
             throw new InternalServerError(e.getMessage());
@@ -56,6 +57,12 @@ public class UserController {
                 .twoFactorAuth(form.isTwoFactorAuth())
                 .verified(form.isVerified())
                 .build();
+        userService.createUser(user);
+    }
+    @PutMapping("/verified/{email}")
+    public void makeUserVerified(@PathVariable String email) {
+        User user = userService.getUserByMail(email);
+        user.setVerified(true);
         userService.createUser(user);
     }
 

@@ -25,9 +25,16 @@ public class AccountController {
     public void registerAccount(@RequestBody String qrCodeData) throws JsonProcessingException {
         String data = DecryptionAlgorithm.decryptData(qrCodeData);
         Account account = accountService.createAccountByQrCodeData(data);
-        simpMessagingTemplate.convertAndSend(destination + account.getEmail(),"Verified");
-        log.info("SEND!!!");
-        log.info(data);
+        simpMessagingTemplate.convertAndSend(destination + account.getEmail() + "/register","Verified");
+        log.info("Message send via WebSocket for registration !!!");
+    }
+
+    @PostMapping("/checkAccount/{mail}")
+    public void checkAccount(@RequestBody String qrCodeData, @PathVariable String mail) {
+        String data = DecryptionAlgorithm.decryptData(qrCodeData);
+        Account account = accountService.doValidation(data, mail);
+        simpMessagingTemplate.convertAndSend(destination + account.getEmail() + "/login","Verified");
+        log.info("Message send via WebSocket for login !!!");
     }
 
     @GetMapping

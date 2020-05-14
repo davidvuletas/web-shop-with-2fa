@@ -2,7 +2,7 @@
   <nb-container>
     <nb-header noLeft :style="{marginTop:'3%', marginBottom: '2%'}">
       <nb-body>
-        <nb-title >Authenticator</nb-title>
+        <nb-title>Authenticator</nb-title>
       </nb-body>
     </nb-header>
     <nb-text
@@ -16,7 +16,7 @@
           <nb-icon type="MaterialCommunityIcons" name="account-card-details" :active="true" />
           <nb-text>Accounts</nb-text>
         </nb-button>
-        <nb-button :onPress="goToQRCodeScreen">
+        <nb-button :onPress="goToQRCodeScreenRegister">
           <nb-icon type="MaterialCommunityIcons" name="two-factor-authentication" />
           <nb-text>Add account</nb-text>
         </nb-button>
@@ -44,8 +44,8 @@ export default {
     }
   },
   methods: {
-    goToQRCodeScreen() {
-      this.navigation.navigate("QRReader");
+    goToQRCodeScreenRegister() {
+      this.navigation.navigate("QRReader", { type: "register" });
     },
     getAllRegisteredAccounts() {
       RNFetchBlob.config({
@@ -62,6 +62,9 @@ export default {
     this.getAllRegisteredAccounts();
     eventBus.$on("backToHome", val => {
       this.getAllRegisteredAccounts();
+    });
+    eventBus.$on("qrCodeRead", mail => {
+      this.navigation.navigate("QRReader", { type: "login", mail: mail });
     });
   }
 };

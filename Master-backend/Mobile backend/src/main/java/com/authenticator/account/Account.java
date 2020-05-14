@@ -10,6 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
+@Setter
 @Builder
 public class Account {
 

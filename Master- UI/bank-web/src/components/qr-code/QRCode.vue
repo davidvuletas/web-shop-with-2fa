@@ -83,7 +83,7 @@ export default {
       );
     },
     displayToast() {
-      this.$bvToast.toast(`QR code are successfully scanned!`, {
+      this.$root.$bvToast.toast(`QR code are successfully scanned!`, {
         title: `Success`,
         variant: "success",
         solid: true,

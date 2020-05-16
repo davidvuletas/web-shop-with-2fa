@@ -74,7 +74,7 @@ export default {
       );
     },
     badLogin() {
-      this.$bvToast.toast(`Your username or password are not correct!`, {
+      this.$root.$bvToast.toast(`Your username or password are not correct!`, {
         title: `Error`,
         variant: "danger",
         solid: true,

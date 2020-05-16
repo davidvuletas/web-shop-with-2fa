@@ -8102,11 +8102,6 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-q@^1.4.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
-  integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
-
 qs@^6.5.0:
   version "6.9.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
@@ -8242,11 +8237,6 @@ react-native-keyboard-aware-scroll-view@0.9.1:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-network-info@^5.2.1:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/react-native-network-info/-/react-native-network-info-5.2.1.tgz#b701f10d4ed1aeadcfe77b197328d1ae846f6d3a"
-  integrity sha512-iam74xXtrSqqZurCl1/bSjZ9jXcsJY84g7brx1/4uVGCY26c6m+4CArHNSHOsz5ATg2NQT+81sjNy0KlCPyK4g==
-
 react-native-paper@^2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-2.16.0.tgz#5a9edd5615bb010ec0d29cbfd5524c2944b2505d"
@@ -8258,13 +8248,6 @@ react-native-paper@^2.16.0:
     hoist-non-react-statics "^3.1.0"
     react-lifecycles-compat "^3.0.4"
     react-native-safe-area-view "^0.12.0"
-
-react-native-pinch-new@^0.1.13:
-  version "0.1.13"
-  resolved "https://registry.yarnpkg.com/react-native-pinch-new/-/react-native-pinch-new-0.1.13.tgz#8d347788d02164de464a71c971c37686ed3d8830"
-  integrity sha512-JkZnmaLZ6yftixJXOw9Lygj5vCrGe6hIP+dl94EDSbD4OVYctiSqKrptfz6HfdRrX1Fj4vaLJKqiL9+gyF8CFw==
-  dependencies:
-    q "^1.4.1"
 
 react-native-reanimated@~1.2.0:
   version "1.2.0"
@@ -8289,13 +8272,6 @@ react-native-screens@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.7.0.tgz#2d3cf3c39a665e9ca1c774264fccdb90e7944047"
   integrity sha512-n/23IBOkrTKCfuUd6tFeRkn3lB2QZ3cmvoubRscR0JU/Zl4/ZyKmwnFmUv1/Fr+2GH/H8UTX59kEKDYYg3dMgA==
-
-react-native-ssl-pinning@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-ssl-pinning/-/react-native-ssl-pinning-1.4.1.tgz#a862c276784c511866ad4326b5ba684868f6e8d7"
-  integrity sha512-sJWFe/hQqtVR7kO5VbjznX5bYAEDyn3EinA62wAP/mrIIWYAH7845q4/vMuReqJF//Wi/jHULStdjH3dhLXuDA==
-  dependencies:
-    q "^1.4.1"
 
 react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   version "1.4.1"
@@ -10176,11 +10152,6 @@ vue-native-template-compiler@^0.1.0:
     change-case "^3.0.1"
     de-indent "^1.0.2"
     he "^1.1.0"
-
-vue-native-websocket@^2.0.14:
-  version "2.0.14"
-  resolved "https://registry.yarnpkg.com/vue-native-websocket/-/vue-native-websocket-2.0.14.tgz#fddb56f9f93d2ecc861486ee3c8f29506ea2a168"
-  integrity sha512-oK8+xG1gmqRs4JngHGwEc4zWoRjsdMB20Sz8pemkh4lW2Vr2676/cDRtd30aGnO2xF7Oxf003wS5JO0kypUsCw==
 
 w3c-hr-time@^1.0.1:
   version "1.0.2"

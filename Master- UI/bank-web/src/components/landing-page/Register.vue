@@ -43,19 +43,27 @@
           placeholder="Enter lastname"
         ></b-form-input>
       </b-form-group>
-      <b-form-group id="input-group-role" label="Role" label-for="input-role"
-       description="Choose role of you">
+      <b-form-group
+        id="input-group-role"
+        label="Role"
+        label-for="input-role"
+        description="Choose role of you"
+      >
         <b-form-select id="input-role" v-model="registrationForm.role" :options="roles" required></b-form-select>
       </b-form-group>
-      <b-form-group id="input-group-2fa" label="Two factor authentication" label-for="input-2fa"
-      description="Click on 'Use' if you want to enable two factor authethication">
+      <b-form-group
+        id="input-group-2fa"
+        label="Two factor authentication"
+        label-for="input-2fa"
+        description="Click on 'Use' if you want to enable two factor authethication"
+      >
         <b-form-radio-group
           v-model="registrationForm.twoFactorAuth"
           id="radio-group-2"
           name="radio-sub-component"
         >
-          <b-form-radio name="yes-factor" value=true>Use</b-form-radio>
-          <b-form-radio name="no-factor" value=false>Not use</b-form-radio>
+          <b-form-radio name="yes-factor" value="true">Use</b-form-radio>
+          <b-form-radio name="no-factor" value="false">Not use</b-form-radio>
         </b-form-radio-group>
       </b-form-group>
       <b-row>
@@ -98,14 +106,33 @@ export default {
       this.$http.post("users/register", this.registrationForm).then(
         response => {
           let mailEncrypted = btoa(this.registrationForm.email);
-          if(this.registrationForm.twoFactorAuth === "true") {
-          this.$router.push({ name: 'qr-code', params: { name: mailEncrypted } });
+          if (this.registrationForm.twoFactorAuth === "true") {
+            this.$router.push({
+              name: "qr-code",
+              params: { name: mailEncrypted, type: "register" }
+            });
+          } else {
+            this.displayToast(
+              "You are registered successfully",
+              "Success",
+              "success"
+            );
+            this.$router.push({ name: "landing-page" });
+            
           }
         },
         error => {
           console.log(error);
         }
       );
+    },
+    displayToast(text, title, type) {
+      this.$root.$bvToast.toast(text, {
+        title: title,
+        variant: type,
+        solid: true,
+        appendToast: false
+      });
     }
   }
 };

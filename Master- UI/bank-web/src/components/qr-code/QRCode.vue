@@ -12,8 +12,12 @@
 </template>
 
 <script>
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client";
+
 import BaseTimer from "../timer/Timer.vue";
 import { eventBus } from "../../main";
+import { WEBSOCKET_URL, TOPIC_URL } from "../../urls";
 
 export default {
   created() {
@@ -22,8 +26,7 @@ export default {
     });
     this.email = this.$route.params.name;
     this.generateQRCode();
-    this.$options.sockets.onmessage = (data) => console.log(data)
-
+    this.connectToWS();
   },
   data() {
     return {
@@ -42,8 +45,50 @@ export default {
     },
     regenerateQRCode() {
       this.generateQRCode();
-      eventBus.$emit('regenerate', true);
+      eventBus.$emit("regenerate", true);
       this.finishedTime = false;
+    },
+    connectToWS() {
+      this.socket = new SockJS(WEBSOCKET_URL);
+      this.stompClient = Stomp.over(this.socket);
+      this.stompClient.connect(
+        {},
+        frame => {
+          this.stompClient.subscribe(
+            TOPIC_URL + atob(this.email) + "/register",
+            tick => {
+              this.displayToast();
+              this.$http.put("users/verified/" + atob(this.email)).then(
+                response => {
+                  console.log(response);
+                  this.$router.push({ name: "landing-page" });
+                },
+                error => console.log(error)
+              );
+            }
+          );
+          this.stompClient.subscribe(
+            TOPIC_URL + atob(this.email) + "/login",
+            tick => {
+              this.displayToast();
+              setTimeout(() => {
+                this.$router.push({ name: "account-page" });
+              }, 2000);
+            }
+          );
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    },
+    displayToast() {
+      this.$root.$bvToast.toast(`QR code are successfully scanned!`, {
+        title: `Success`,
+        variant: "success",
+        solid: true,
+        appendToast: false
+      });
     }
   },
   components: {

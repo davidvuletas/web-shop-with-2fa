@@ -2,7 +2,7 @@ package com.authenticator.account;
 
 import com.authenticator.exception.AlreadyExistingException;
 import com.authenticator.exception.InternalServerErrorException;
-import com.authenticator.exception.QRCodeException;
+import com.authenticator.exception.NotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
 
-    public void createAccountByQrCodeData(String data) {
+    public Account createAccountByQrCodeData(String data) {
         try {
             JsonNode object = new ObjectMapper().readTree(data);
             Account account = mapJsonNodeToAccount(object);
@@ -34,8 +35,32 @@ public class AccountService {
                         account.getEmail());
                 throw new AlreadyExistingException("This account is already registered");
             }
-            accountRepository.save(account);
+            return accountRepository.save(account);
         } catch (JsonProcessingException e) {
+            log.error("Something went wrong during mapping, {}", e.getMessage());
+            throw new InternalServerErrorException("Something went wrong during mapping data");
+        }
+    }
+
+    public Account doValidation(String data, String mail) {
+        try {
+            JsonNode obj = new ObjectMapper().readTree(data);
+            Account account = mapJsonNodeToAccount(obj);
+            if (!account.getEmail().equals(mail)) {
+                log.error("Reading QR code of another user");
+                throw new NotFoundException("Not permitted to scan QR code for another user!");
+            }
+            if (!accountRepository.existsAccountByEmail(account.getEmail())) {
+                log.error("Account not exists");
+                throw new NotFoundException("This account is not exists!");
+            } else {
+                Account fromDb = accountRepository.findAccountByEmail(account.getEmail());
+                LocalDateTime now = OffsetDateTime.now().toLocalDateTime();
+                fromDb.setLastActivity(now.format(formatter));
+                return accountRepository.save(fromDb);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
             log.error("Something went wrong during mapping, {}", e.getMessage());
             throw new InternalServerErrorException("Something went wrong during mapping data");
         }
@@ -54,7 +79,7 @@ public class AccountService {
         }*/
         return Account.builder()
                 .email(object.get("email").asText())
-                .generatedTime(object.get("generatedTime").asText())
+                .lastActivity(object.get("generatedTime").asText())
                 .role(Role.valueOf(object.get("role").asText()))
                 .build();
     }

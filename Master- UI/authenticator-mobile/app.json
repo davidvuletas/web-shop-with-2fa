@@ -22,7 +22,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.authenticator"
     },
     "packagerOpts": {
       "config": "metro.config.js",
@@ -33,6 +34,10 @@
         "tsx",
         "vue"
       ]
-    }
+    },
+    "android": {
+      "package": "com.authenticator"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }

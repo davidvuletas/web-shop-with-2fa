@@ -30,9 +30,10 @@ import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
 
-import axios from "axios";
-import {eventBus} from "../App"
+import { eventBus } from "../shared";
 import qrcodelogo from "../../assets/qr-code.png";
+import RNFetchBlob from "rn-fetch-blob";
+import { host } from "../shared";
 
 export default {
   components: {
@@ -43,9 +44,6 @@ export default {
   },
   data: function() {
     return {
-      api: axios.create({
-        baseURL: "http://192.168.0.12:8081/api/"
-      }),
       StyleSheet: StyleSheet,
       BarCodeScanner: BarCodeScanner,
       qrCode: null,
@@ -79,43 +77,109 @@ export default {
           color: "white"
         }
       },
-      qrcodeLogo: qrcodelogo,
+      qrcodeLogo: qrcodelogo
     };
   },
   methods: {
     handleBarCodeScanned(e) {
       if (!this.qrCode) {
         this.qrCode = e.data;
-        let scopedBack = this.goBack;
-        let scopedResetQRCode = this.resetQRCode;
-        this.api
-          .post("account/register", this.qrCode)
-          .then(function(data) {
-            Alert.alert(
-              "Success",
-              "QR code scanned successfully!",
-              [{ text: "Ok", onPress:() => scopedBack() }],
-              { cancelable: false }
-            );
-          })
-          .catch(function(error) {
-            console.log(error.response.message)
-            Alert.alert(
-              "Failed",
-              error.response.data.message,
-              [{ text: "Cancel", onPress:() => scopedResetQRCode()}],
-              { cancelable: false }
-            );
-          });
+        if (this.navigation.state.params.type === "login") {
+          const mail = this.navigation.state.params.mail;
+          this.validateAccountForQRCode(mail);
+        } else {
+          this.registerAccountForQRCode();
+        }
       }
     },
     goBack() {
       this.navigation.navigate("Home");
-      //this.$socket.send('test')
-      eventBus.$emit('backToHome', true);
+      eventBus.$emit("backToHome", true);
     },
     resetQRCode() {
       this.qrCode = null;
+    },
+    registerAccountForQRCode() {
+      let scopedResetQRCode = this.resetQRCode;
+      let scopedBack = this.goBack;
+      RNFetchBlob.config({
+        trusty: true
+      })
+        .fetch(
+          "POST",
+          "https://" + host + ":8084/api/account/register",
+          {
+            "Content-Type": "application/json"
+          },
+          this.qrCode
+        )
+        .then(function(data) {
+           if ([401, 404, 400, 500].indexOf(data.respInfo.status) > -1) {
+            Alert.alert(
+              "Failed",
+              JSON.parse(data.data).message,
+              [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+              { cancelable: false }
+            );
+          } else {
+          Alert.alert(
+            "Success",
+            "QR code scanned successfully!",
+            [{ text: "Ok", onPress: () => scopedBack() }],
+            { cancelable: false }
+          );
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response.message);
+          Alert.alert(
+            "Failed",
+            "Connection with server is not working",
+            [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+            { cancelable: false }
+          );
+        });
+    },
+    validateAccountForQRCode(mail) {
+      let scopedResetQRCode = this.resetQRCode;
+      let scopedBack = this.goBack;
+      RNFetchBlob.config({
+        trusty: true
+      })
+        .fetch(
+          "POST",
+          "https://" + host + ":8084/api/account/checkAccount/" + mail,
+          {
+            "Content-Type": "application/json"
+          },
+          this.qrCode
+        )
+        .then(function(data) {
+          if ([401, 404, 400, 500].indexOf(data.respInfo.status) > -1) {
+            Alert.alert(
+              "Failed",
+              JSON.parse(data.data).message,
+              [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+              { cancelable: false }
+            );
+          } else {
+            Alert.alert(
+              "Success",
+              "QR code scanned successfully!",
+              [{ text: "Ok", onPress: () => scopedBack() }],
+              { cancelable: false }
+            );
+          }
+        })
+        .catch(function(error) {
+          console.log(error.response.message);
+          Alert.alert(
+            "Failed",
+            "Connection with server is not working",
+            [{ text: "Cancel", onPress: () => scopedResetQRCode() }],
+            { cancelable: false }
+          );
+        });
     }
   },
   props: {

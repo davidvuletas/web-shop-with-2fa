@@ -3,6 +3,20 @@ spring:
     config:
       server:
         git:
-          uri: /Users/davidvuletas/Projects/Master/Configs
+          uri: https://github.com/davidvuletas/config-properties
 server:
   port: 8888
+  ssl:
+    key-store: keystore.jks
+    key-store-type: JKS
+    key-store-password: master20202fa
+    key-alias: config-server
+
+    trust-store: truststore.jks
+    trust-store-password: master20202fa
+
+    enabled-protocols: TLSv1.3
+    client-auth: want
+logging:
+  level:
+    root: info

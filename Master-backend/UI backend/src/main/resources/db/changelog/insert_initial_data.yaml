@@ -3,4 +3,6 @@ databaseChangeLog:
   - changeSet:
       id: initalData
       author: David Vuletas
-      sql: "insert into users (email, password, verified) values ('admin@gmail.com', '$2y$12$WXaw81FyLTQGyOYlrqekJe3msQCduezuYpcxkrcuigjCptVeHqZam', TRUE)"
+      changes:
+        - sql:
+            sql: insert into user_profile (email, password, verified) values ('admin@gmail.com', '$2y$12$WXaw81FyLTQGyOYlrqekJe3msQCduezuYpcxkrcuigjCptVeHqZam', TRUE)

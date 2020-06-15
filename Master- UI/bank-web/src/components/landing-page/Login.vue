@@ -1,11 +1,7 @@
 <template>
   <b-jumbotron class="loginBody" border-variant="dark" header-level="5">
     <b-form>
-      <b-form-group
-        id="input-group-mail"
-        label="Email address"
-        label-for="input-mail"
-      >
+      <b-form-group id="input-group-mail" label="Email address" label-for="input-mail">
         <b-form-input
           id="input-mail"
           v-model="loginForm.email"
@@ -24,8 +20,13 @@
       </b-form-group>
       <b-row>
         <b-col>
-          <b-button variant="primary" type="submit" @click.prevent="login" :disabled="
-          loginForm.password == '' || loginForm.email.indexOf('@') == -1 ">Login</b-button>
+          <b-button
+            variant="primary"
+            type="submit"
+            @click.prevent="login"
+            :disabled="
+          loginForm.password == '' || loginForm.email.indexOf('@') == -1 "
+          >Login</b-button>
         </b-col>
         <b-col>
           <p>
@@ -53,12 +54,33 @@ export default {
       localStorage.clear();
       this.$http.post("users/login", this.loginForm).then(
         response => {
+          localStorage.setItem("role", response.data.role);
           localStorage.setItem("jwtToken", response.headers.get("JWT"));
+          console.log(response.data);
+          let mailEncrypted = btoa(response.data.email);
+          if (response.data.twoFactorAuth) {
+            this.$router.push({
+              name: "qr-code",
+              params: { name: mailEncrypted, type: "login" }
+            });
+          } else {
+            this.$router.push({
+              name: "account-page",
+            });
+          }
         },
         error => {
-          console.log(error);
+          this.badLogin();
         }
       );
+    },
+    badLogin() {
+      this.$root.$bvToast.toast(`Your username or password are not correct!`, {
+        title: `Error`,
+        variant: "danger",
+        solid: true,
+        appendToast: false
+      });
     }
   }
 };

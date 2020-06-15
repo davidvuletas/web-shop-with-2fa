@@ -5,7 +5,7 @@ databaseChangeLog:
       author: David Vuletas
       changes:
         - createTable:
-            tableName: users
+            tableName: user_profile
             columns:
               - column:
                   name: id
@@ -40,7 +40,7 @@ databaseChangeLog:
                   name: role
                   type: varchar(30)
         - createTable:
-            tableName: account
+            tableName: bank_account
             columns:
               - column:
                   name: id
@@ -50,8 +50,39 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: type
-                  type: varchar(30)
+                  name: account_number
+                  type: varchar(12)
               - column:
                   name: balance
-                  type: float(10)
+                  type: float(20)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_bank_account_user
+                    references: user_profile(id)
+        - createTable:
+            tableName: bank_card
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: card_number
+                  type: varchar(20)
+              - column:
+                  name: card_issuer
+                  type: varchar(30)
+              - column:
+                  name: account_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_card_account
+                    references: bank_account(id)
+

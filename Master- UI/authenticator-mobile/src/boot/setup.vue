@@ -1,6 +1,5 @@
 <template>
   <view class="container">
-    <app-loading v-if="!isAppReady"></app-loading>
     <app v-if="isAppReady"></app>
   </view>
 </template>
@@ -8,15 +7,14 @@
 <script>
 import Vue from "vue-native-core";
 import { VueNativeBase } from "native-base";
-import { AppLoading } from "expo";
 import * as Font from "expo-font";
+import { host } from "../shared";
 import App from "../App.vue";
 
 // registering all native-base components to the global scope of the Vue
 Vue.use(VueNativeBase);
-
 export default {
-  components: { App, AppLoading },
+  components: { App },
   data() {
     return {
       isAppReady: false

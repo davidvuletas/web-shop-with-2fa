@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user_profile")
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Setter

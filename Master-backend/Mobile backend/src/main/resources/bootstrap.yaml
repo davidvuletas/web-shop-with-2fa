@@ -19,7 +19,7 @@ spring:
     name: authenticator-client
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: https://localhost:8888
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES
@@ -29,12 +29,12 @@ server:
   servlet:
     context-path: /api
   ssl:
-    key-store: keystore.jks
+    key-store: classpath:keystore.jks
     key-store-type: JKS
     key-store-password: master20202fa
     key-alias: authenticator-backend
 
-    trust-store: truststore.jks
+    trust-store: classpath:truststore.jks
     trust-store-password: master20202fa
 
     enabled-protocols: TLSv1.2

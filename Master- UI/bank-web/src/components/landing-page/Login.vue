@@ -54,6 +54,7 @@ export default {
       localStorage.clear();
       this.$http.post("users/login", this.loginForm).then(
         response => {
+          localStorage.setItem("role", response.data.role);
           localStorage.setItem("jwtToken", response.headers.get("JWT"));
           console.log(response.data);
           let mailEncrypted = btoa(response.data.email);

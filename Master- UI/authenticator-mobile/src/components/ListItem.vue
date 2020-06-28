@@ -17,10 +17,8 @@
 </template>
 
 <script>
-import operator from "../../assets/operator-text.png";
-import admin from "../../assets/admin-text.png";
-import chief from "../../assets/manager-text.png";
-import user from "../../assets/user-text.png";
+import webshop from "../../assets/webshop.png";
+import finance from "../../assets/finance.png";
 import { eventBus } from "../shared";
 
 export default {
@@ -39,16 +37,11 @@ export default {
       eventBus.$emit("qrCodeRead", mail);
     },
     correctLogo() {
-      let role = this.account.role;
-      console.log(role);
-      if (role === "Admin") {
-        return admin;
-      } else if (role === "Operator") {
-        return operator;
-      } else if (role === "Chief") {
-        return chief;
+      let role = this.account.application;
+      if(role == 'webshop') {
+        return webshop;
       } else {
-        return user;
+        return finance;
       }
     }
   }

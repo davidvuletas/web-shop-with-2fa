@@ -23,5 +23,42 @@ databaseChangeLog:
                   name: last_activity
                   type: varchar(30)
               - column:
-                  name: role
+                  name: application
+                  type: varchar(30)
+        - createTable:
+            tableName: authentication_code
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(30)
+                  constraints:
+                    unique: true
+              - column:
+                  name: code
+                  type: varchar(4)
+              - column:
+                  name: application
+                  type: varchar(30)
+        - createTable:
+            tableName: qr_codes
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: qr_code
+                  type: varchar(200)
+              - column:
+                  name: read_time
                   type: varchar(30)

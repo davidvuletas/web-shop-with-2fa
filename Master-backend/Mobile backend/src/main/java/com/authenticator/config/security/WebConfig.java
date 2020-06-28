@@ -15,7 +15,7 @@ import java.util.List;
 @Configuration
 public class WebConfig implements Filter {
 
-    private final List<String> allowedOrigins = Collections.singletonList("https://localhost:8080");
+    private final List<String> allowedOrigins = Arrays.asList("https://localhost:8080", "https://localhost:8089");
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {

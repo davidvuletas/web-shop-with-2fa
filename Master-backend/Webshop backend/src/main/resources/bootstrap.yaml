@@ -1,0 +1,66 @@
+spring:
+  liquibase:
+    enabled: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:32540/webshop
+    username: ENC(Thrjz8tX2hHDivJ7EK6gP/RdbIr82O+T)
+    password: ENC(slHVxZ0XcGNDhTXZALwkHFRs55kXMVoH)
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  profiles:
+    active: dev
+  application:
+    name: webshop-client
+  cloud:
+    config:
+      uri: https://localhost:8888
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: authenticatorinfo@gmail.com
+    password: master20202fa
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+server:
+  port: 8083
+  servlet:
+    context-path: /api
+  ssl:
+    key-store: classpath:keystore.jks
+    key-store-type: JKS
+    key-store-password: master20202fa
+    key-alias: webshop-backend
+
+    trust-store: classpath:truststore.jks
+    trust-store-password: master20202fa
+
+    enabled-protocols: TLSv1.3
+    client-auth: want
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /
+
+logging:
+  level:
+    root: info
+
+mobile:
+  backend:
+    url: https://localhost:8084/api

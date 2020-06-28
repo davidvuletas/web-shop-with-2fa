@@ -44,14 +44,6 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group
-        id="input-group-role"
-        label="Role"
-        label-for="input-role"
-        description="Choose role of you"
-      >
-        <b-form-select id="input-role" v-model="registrationForm.role" :options="roles" required></b-form-select>
-      </b-form-group>
-      <b-form-group
         id="input-group-2fa"
         label="Two factor authentication"
         label-for="input-2fa"
@@ -63,7 +55,7 @@
           name="radio-sub-component"
         >
           <b-form-radio name="yes-factor" value="true">Use</b-form-radio>
-          <b-form-radio name="no-factor" value="false">Not use</b-form-radio>
+          <b-form-radio name="no-factor" value="false">Don't use</b-form-radio>
         </b-form-radio-group>
       </b-form-group>
       <b-row>
@@ -90,15 +82,8 @@ export default {
         password: "",
         name: "",
         lastName: "",
-        twoFactorAuth: "false",
-        role: "USER"
-      },
-      roles: [
-        { value: "ADMIN", text: "Admin" },
-        { value: "OPERATOR", text: "Operator" },
-        { value: "CHIEF", text: "Chief" },
-        { value: "USER", text: "Regular user" }
-      ]
+        twoFactorAuth: "false"
+      }
     };
   },
   methods: {

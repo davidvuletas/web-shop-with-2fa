@@ -17,14 +17,25 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Component
 public class DecryptionAlgorithm {
 
-    private static String secretKeyFromProperties;
-    private static String secretInitialFromProperties;
+    private static String secretKeyFromPropertiesWeb;
+    private static String secretInitialFromPropertiesWeb;
+
+    private static String secretKeyFromPropertiesFinance;
+    private static String secretInitialFromPropertiesFinance;
 
     public static String decryptData(String data) {
         try {
+            IvParameterSpec iv;
+            SecretKeySpec skeySpec;
+            if(data.contains("applicationName: finance")) {
+                iv = new IvParameterSpec(secretInitialFromPropertiesFinance.getBytes(UTF_8));
+                skeySpec = new SecretKeySpec(secretKeyFromPropertiesFinance.getBytes(UTF_8), "AES");
+            } else {
+                iv = new IvParameterSpec(secretInitialFromPropertiesWeb.getBytes(UTF_8));
+                skeySpec = new SecretKeySpec(secretKeyFromPropertiesWeb.getBytes(UTF_8), "AES");
+            }
+            data = data.split(";")[0];
             data = decodeEscapedChars(data);
-            IvParameterSpec iv = new IvParameterSpec(secretInitialFromProperties.getBytes(UTF_8));
-            SecretKeySpec skeySpec = new SecretKeySpec(secretKeyFromProperties.getBytes(UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
             byte[] original = cipher.doFinal(Base64.getDecoder().decode(data));
@@ -39,13 +50,23 @@ public class DecryptionAlgorithm {
         return URLDecoder.decode(data.replaceAll("\\+", "%2b"), UTF_8);
     }
 
-    @Value("${encrypt.key}")
-    public void setSecretKeyFromProperties(String secretFromProp) {
-        DecryptionAlgorithm.secretKeyFromProperties = secretFromProp;
+    @Value("${encrypt-web.key}")
+    public void setSecretKeyFromPropertiesWeb(String secretFromProp) {
+        DecryptionAlgorithm.secretKeyFromPropertiesWeb = secretFromProp;
     }
 
-    @Value("${encrypt.initial}")
-    public void setSecretInitialFromProperties(String secretInitialFromProp) {
-        DecryptionAlgorithm.secretInitialFromProperties = secretInitialFromProp;
+    @Value("${encrypt-web.initial}")
+    public void setSecretInitialFromPropertiesWeb(String secretInitialFromProp) {
+        DecryptionAlgorithm.secretInitialFromPropertiesWeb = secretInitialFromProp;
+    }
+
+    @Value("${encrypt-finance.key}")
+    public void setSecretKeyFromPropertiesFinance(String secretFromProp) {
+        DecryptionAlgorithm.secretKeyFromPropertiesFinance = secretFromProp;
+    }
+
+    @Value("${encrypt-finance.initial}")
+    public void setSecretInitialFromPropertiesFinance(String secretInitialFromProp) {
+        DecryptionAlgorithm.secretInitialFromPropertiesFinance = secretInitialFromProp;
     }
 }

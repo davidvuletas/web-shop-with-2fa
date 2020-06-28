@@ -15,6 +15,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -25,14 +27,15 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
 
-    public Account createAccountByQrCodeData(String data) {
+    public Account createAccountByQrCodeData(String data, String applicationName) {
         try {
             JsonNode object = new ObjectMapper().readTree(data);
             Account account = mapJsonNodeToAccount(object);
+            account.setApplication(applicationName);
 
-            if (accountRepository.existsAccountByEmail(account.getEmail())) {
-                log.error("Account for email {} is already registered",
-                        account.getEmail());
+            if (accountRepository.existsAccountByEmailAndApplication(account.getEmail(), applicationName)) {
+                log.error("Account for email {} and application {} is already registered",
+                        account.getEmail(), account.getApplication());
                 throw new AlreadyExistingException("This account is already registered");
             }
             return accountRepository.save(account);
@@ -42,19 +45,21 @@ public class AccountService {
         }
     }
 
-    public Account doValidation(String data, String mail) {
+    public Account doValidation(String data, String mail, String appName) {
         try {
             JsonNode obj = new ObjectMapper().readTree(data);
             Account account = mapJsonNodeToAccount(obj);
-            if (!account.getEmail().equals(mail)) {
+            Account existing = accountRepository.findAccountByEmailAndApplication(account.getEmail(), appName);
+            if (!account.getEmail().equals(mail) ||
+                    (account.getEmail().equals(mail) && isNull(existing))) {
                 log.error("Reading QR code of another user");
                 throw new NotFoundException("Not permitted to scan QR code for another user!");
             }
-            if (!accountRepository.existsAccountByEmail(account.getEmail())) {
+            if (!accountRepository.existsAccountByEmailAndApplication(account.getEmail(), appName)) {
                 log.error("Account not exists");
                 throw new NotFoundException("This account is not exists!");
             } else {
-                Account fromDb = accountRepository.findAccountByEmail(account.getEmail());
+                Account fromDb = accountRepository.findAccountByEmailAndApplication(account.getEmail(), appName);
                 LocalDateTime now = OffsetDateTime.now().toLocalDateTime();
                 fromDb.setLastActivity(now.format(formatter));
                 return accountRepository.save(fromDb);
@@ -70,6 +75,9 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
+    public Account getAccountByMailAndApplicationName(String email, String appName) {
+        return accountRepository.findAccountByEmailAndApplication(email, appName);
+    }
     private Account mapJsonNodeToAccount(JsonNode object) {
         //TODO Uncomment at the end
         /*String validUntilString = object.get("validTimeUntil").asText();
@@ -80,7 +88,6 @@ public class AccountService {
         return Account.builder()
                 .email(object.get("email").asText())
                 .lastActivity(object.get("generatedTime").asText())
-                .role(Role.valueOf(object.get("role").asText()))
                 .build();
     }
 }

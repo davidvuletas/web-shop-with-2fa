@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webshop-db
+  labels:
+    app: webshop-db
+data:
+  POSTGRES_DB: webshop
+  POSTGRES_USER: dbWebshop
+  POSTGRES_PASSWORD: dbPassword

@@ -3,7 +3,6 @@ package com.authenticator.account;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "account")
@@ -22,8 +21,7 @@ public class Account {
     private String email;
 
     @Column
-    @Enumerated
-    private Role role;
+    private String application;
 
     @Column(name = "last_activity")
     private String lastActivity;

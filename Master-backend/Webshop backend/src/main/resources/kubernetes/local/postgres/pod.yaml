@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: webshop-db
+  labels:
+    app: webshop-db
+spec:
+  containers:
+    - name: webshop-db
+      image: postgres
+      imagePullPolicy: "IfNotPresent"
+      envFrom:
+        - configMapRef:
+            name: webshop-db
+      ports:
+        - containerPort: 5432

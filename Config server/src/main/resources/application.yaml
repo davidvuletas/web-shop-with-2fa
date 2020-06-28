@@ -7,12 +7,12 @@ spring:
 server:
   port: 8888
   ssl:
-    key-store: keystore.jks
+    key-store: classpath:keystore.jks
     key-store-type: JKS
     key-store-password: master20202fa
     key-alias: config-server
 
-    trust-store: truststore.jks
+    trust-store: classpath:truststore.jks
     trust-store-password: master20202fa
 
     enabled-protocols: TLSv1.3

@@ -77,7 +77,8 @@ export default {
           color: "white"
         }
       },
-      qrcodeLogo: qrcodelogo
+      qrcodeLogo: qrcodelogo,
+      registeredMail: ''
     };
   },
   methods: {
@@ -96,12 +97,16 @@ export default {
       this.navigation.navigate("Home");
       eventBus.$emit("backToHome", true);
     },
+    goToPinCodeScreen(email, applicationName) {
+      this.navigation.navigate("PinCodeScreen", {email: email, applicationName: applicationName});
+    },
     resetQRCode() {
       this.qrCode = null;
     },
     registerAccountForQRCode() {
       let scopedResetQRCode = this.resetQRCode;
       let scopedBack = this.goBack;
+      let scopedPinCode = this.goToPinCodeScreen;
       RNFetchBlob.config({
         trusty: true
       })
@@ -114,7 +119,7 @@ export default {
           this.qrCode
         )
         .then(function(data) {
-           if ([401, 404, 400, 500].indexOf(data.respInfo.status) > -1) {
+          if ([401, 404, 400, 409, 500].indexOf(data.respInfo.status) > -1) {
             Alert.alert(
               "Failed",
               JSON.parse(data.data).message,
@@ -122,12 +127,13 @@ export default {
               { cancelable: false }
             );
           } else {
-          Alert.alert(
-            "Success",
-            "QR code scanned successfully!",
-            [{ text: "Ok", onPress: () => scopedBack() }],
-            { cancelable: false }
-          );
+            let parsedData = JSON.parse(data.data);
+            Alert.alert(
+              "Success",
+              "QR code scanned successfully!",
+              [{ text: "Ok", onPress: () => scopedPinCode(parsedData.email, parsedData.applicationName) }],
+              { cancelable: false }
+            );
           }
         })
         .catch(function(error) {
@@ -155,7 +161,7 @@ export default {
           this.qrCode
         )
         .then(function(data) {
-          if ([401, 404, 400, 500].indexOf(data.respInfo.status) > -1) {
+          if ([401, 404, 400, 409, 500].indexOf(data.respInfo.status) > -1) {
             Alert.alert(
               "Failed",
               JSON.parse(data.data).message,

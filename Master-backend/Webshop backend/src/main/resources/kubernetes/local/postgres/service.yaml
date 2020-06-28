@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: webshop-db
+  labels:
+    app: webshop-db
+spec:
+  type: NodePort
+  selector:
+    app: webshop-db
+  ports:
+    - name: webshop-db
+      port: 5432
+      nodePort: 32540

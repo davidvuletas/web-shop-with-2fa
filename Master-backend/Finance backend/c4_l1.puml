@@ -1,0 +1,18 @@
+@startuml "c4_l1"
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(korisnik, "Korisnik aplikacije", "Korisnik aplikacije \n\
+        koji želi da koristi sistem \n\
+        na najsigurniji način \n\
+        (korišćenjem dvostruke verifikacije identiteta)")
+System(system_2fa ,"Sistem za dvostruku verifikaciju identiteta korisnika", "Dozvoljava korisniku \n\
+        da koristi sistem u skladu sa potrebama,\n\
+         uz mogućnost postavljanja i korišćenja\n\
+         dvostruke verifikacije identita korišćenjem QR koda")
+System_Ext(mail_system, "E-mail sistem", "Korišćenje Google-ovog\n Gmail servera \n za slanje email-ova.")
+
+Rel(korisnik, system_2fa, "Koristi za pristupanje")
+Rel_Neighbor(system_2fa, mail_system, "Slanje email-a", SMTP)
+Rel_Back(korisnik, mail_system, "Slanje email-a korisniku")
+
+@enduml

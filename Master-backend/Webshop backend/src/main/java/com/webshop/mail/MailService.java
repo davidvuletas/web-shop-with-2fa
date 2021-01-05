@@ -27,9 +27,11 @@ public class MailService {
 
     @Async
     public void sendMail(String to, String code) {
-
-        AuthenticationCode authenticationCode = AuthenticationCode.builder().code(code).applicationName("webshop").email(to).build();
-        restTemplate.postForEntity(mobileBackendUrl + "/code" , authenticationCode, AuthenticationCode.class);
+        AuthenticationCode authenticationCode = AuthenticationCode.builder()
+                .code(code)
+                .applicationName("webshop")
+                .email(to).build();
+        restTemplate.postForEntity(mobileBackendUrl + "/code", authenticationCode, AuthenticationCode.class);
 
         SimpleMailMessage message = new SimpleMailMessage();
         String messageText = "Thanks for choosing our system for two factor authentication!\n" +

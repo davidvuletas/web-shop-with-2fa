@@ -6,7 +6,7 @@
       v-if="this.finishedTime === true"
       :style="{marginLeft: '24%'}"
       @click.prevent="regenerateQRCode"
-    >Regenerate QRCode</b-button>
+    >Regenerate QR code</b-button>
     <BaseTimer :style="{marginLeft : '20%', marginTop: '10%'}" />
   </div>
 </template>

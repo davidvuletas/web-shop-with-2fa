@@ -39,7 +39,7 @@ const COLOR_CODES = {
   }
 };
 
-const TIME_LIMIT = 10;
+const TIME_LIMIT = 60;
 import { eventBus } from "../../main"
 
 export default {
@@ -60,7 +60,7 @@ export default {
       const minutes = Math.floor(timeLeft / 60);
       let seconds = timeLeft % 60;
 
-      if (seconds < 10) {
+      if (seconds < 60) {
         seconds = `0${seconds}`;
       }
 

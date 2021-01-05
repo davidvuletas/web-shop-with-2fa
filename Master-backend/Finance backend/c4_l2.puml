@@ -1,0 +1,51 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+Person(korisnik, "Korisnik aplikacije", "Korisnik web aplikacije \n\
+        koji želi da koristi sistem \n\
+        na najsigurniji način \n\
+        (korišćenjem dvostruke verifikacije identiteta)")
+System_Boundary(c1, "Sistem za verifikaciju \nidentiteta korisnika") {
+    Boundary(c2, "Web aplikacija 1") {
+        Container(web_aplikacija1, "Web aplikacija","VueJS", "Omogućava korisniku da koristi sistem")
+        Container(server_web_aplikacija1, "Web server","Spring MVC, Java", "Pruža korišćenje API-a ostalim komponentama sistema")
+        ContainerDb(db_aplikacija1, "Baza podataka", "PostgreSQL", "Omogućava skladištenje podataka o korisnicima, QR kodovima ..")
+    }
+    Boundary(c3, "Web aplikacija 2") {
+            Container(web_aplikacija2, "Web aplikacija","VueJS", "Omogućava korisniku da koristi sistem")
+            Container(server_web_aplikacija2, "Web server","Spring MVC, Java", "Pruža korišćenje API-a ostalim komponentama sistema")
+            ContainerDb(db_aplikacija2, "Baza podatak", "PostgreSQL", "Omogućava skladištenje podataka o korisnicima, QR kodovima ..")
+    }
+    Boundary(c4, "Mobilna aplikacija") {
+        Container(mobilna_aplikacija, "Mobilna aplikacija", "Vue Native, Javascript", "Omogućava korisniku da verifikuje svoj identitet prilikom\n\
+                pristupanja web aplikaciji skeniranjem QR koda")
+        Container(server_mobilne_aplikacije, "Server","Spring MVC, Java", "Pruža korišćenje API-a mobilnoj aplikaciji")
+        ContainerDb(db_mobilna_aplikacija, "Baza podataka", "PostgreSQL", "Omogućava skladištenje podataka o korisnicima, QR kodovima ..")
+
+    }
+}
+
+System_Ext(mail_system, "E-mail sistem", "Korišćenje Google-ovog\n Gmail servera \n za slanje email-ova.")
+
+Rel(mobilna_aplikacija, server_mobilne_aplikacije, "Upućivanjem API poziva", "JSON, HTTPS")
+Rel(server_mobilne_aplikacije, db_mobilna_aplikacija, "Čitanje i pisanje", "JDBC")
+
+Rel(web_aplikacija1, server_web_aplikacija1, "Upućivanjem API poziva", "JSON, HTTPS")
+Rel(server_web_aplikacija1, db_aplikacija1, "Čitanje i pisanje", "JDBC")
+Rel(server_web_aplikacija1, mail_system, "Slanje email-a", SMTP)
+
+Rel(mobilna_aplikacija, server_web_aplikacija1, "Čitanje poruka", "Websocket")
+Rel(mobilna_aplikacija, server_web_aplikacija2, "Čitanje poruka", "Websocket")
+
+Rel(web_aplikacija2, server_web_aplikacija2, "Upućivanjem API poziva", "JSON, HTTPS")
+Rel(server_web_aplikacija2, db_aplikacija2, "Čitanje i pisanje", "JDBC")
+Rel(server_web_aplikacija2, mail_system, "Slanje email-a", SMTP)
+
+Rel(korisnik, mobilna_aplikacija, "Koristi za\n verifikaciju", "Android/IOS mobilni telefon")
+Rel(korisnik, web_aplikacija1, "Koristi za\n pristupanje", "Web browser")
+Rel(korisnik, web_aplikacija2, "Koristi za\n pristupanje", "Web browser")
+
+Rel_Back(server_mobilne_aplikacije, server_web_aplikacija1, "Pozivanje API-a", HTTPS)
+Rel_Back(server_mobilne_aplikacije, server_web_aplikacija2, "Pozivanje API-a", HTTPS)
+
+@enduml

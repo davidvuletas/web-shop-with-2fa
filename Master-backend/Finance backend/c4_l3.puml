@@ -1,0 +1,59 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+Container(web_aplikacija, "Web aplikacija","VueJS", "Omogućava korisniku da koristi sistem")
+Container(mobilna_aplikacija, "Mobilna aplikacija", "Vue Native, Javascript", "Omogućava korisniku da verifikuje svoj identitet prilikom\n\
+                pristupanja web aplikaciji skeniranjem QR koda")
+
+Boundary(c1, "Web server", "Spring Boot") {
+    Container(qrController, "QRCodeController", "Rest Controller component")
+    Container(qrService, "QRCodeService", "Service component")
+    Container(encAlgorithm, "EncryptionAlgorithm", "Utility for encryption and decryption")
+
+    Rel(qrController, qrService, "Koristi")
+    Rel(qrService, encAlgorithm, "Koristi")
+
+    Container(userController, "UserController", "Rest Controller component")
+    Container(userService, "UserService", "Service component")
+    Container(mailService, "MailService", "Service component")
+    Container(jwtUserService, "JwtUserDetailsService", "Service component")
+    Container(userRepository, "UserRepository", "Repository component")
+
+    Rel(userController, userService, "Koristi")
+    Rel(userController, jwtUserService, "Koristi")
+    Rel(userController, mailService, "Koristi")
+    Rel(userService, userRepository, "Koristi")
+    Rel(jwtUserService, userRepository, "Koristi")
+}
+
+Boundary(c2, "Mobilna aplikacija", "Spring Boot") {
+    Container(accountController, "AccountController", "Rest Controller component")
+    Container(pinCodeController, "PinCodeController", "Rest Controller component")
+
+    Container(qrCodesService, "QRCodesService", "Service component")
+    Container(pinCodeService, "PinCodeService", "Service component")
+    Container(accountService, "AccountService", "Service component")
+    Container(decAlgorithm, "DecryptionAlgorithm", "Utility for encryption and decryption")
+
+    Container(qrCodesRepo, "QrCodesRepository", "Repository component")
+    Container(pinCodesRepo, "PinCodesRepository", "Repository component")
+    Container(accountRepo, "AccountRepository", "Repository component")
+
+    Rel(pinCodeController, pinCodeService, "Koristi")
+    Rel(pinCodeController, accountService, "Koristi")
+    Rel(accountController, accountService, "Koristi")
+    Rel(accountController, qrCodesService, "Koristi")
+    Rel(accountController, decAlgorithm, "Koristi")
+    Rel(pinCodeService, pinCodesRepo, "Koristi")
+    Rel(qrCodesService, qrCodesRepo, "Koristi")
+    Rel(accountService, accountRepo, "Koristi")
+
+}
+Rel(web_aplikacija, qrController, "Šalje zahtev na API", "JSON/HTTPS")
+Rel(web_aplikacija, userController, "Šalje zahtev na API", "JSON/HTTPS")
+Rel(mobilna_aplikacija, pinCodeController, "Šalje zahtev na API", "JSON/HTTPS")
+Rel(mobilna_aplikacija, accountController, "Šalje zahtev na API", "JSON/HTTPS")
+Rel(mailService, pinCodeController, "Šalje zahtev na API", "JSON/HTTPS")
+Rel(pinCodeController, web_aplikacija ,"Šalje poruku na topic put web socket-a")
+Rel(accountController, web_aplikacija ,"Šalje poruku na topic put web socket-a")
+@enduml

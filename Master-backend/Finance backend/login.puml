@@ -1,0 +1,19 @@
+@startuml
+actor Korisnik
+participant  "Web aplikacija" as webapp
+participant  "Mobilna aplikacija" as mobapp
+autonumber
+Korisnik -> webapp: Pristupanje sistemu \n,unos korisničkog\nimena i lozinke
+activate webapp
+webapp -> webapp: Generisanje \nQR koda
+activate webapp
+deactivate webapp
+Korisnik -> mobapp : Odabir naloga,\nskeniranje \nQR koda
+activate mobapp
+mobapp -> mobapp : Validacija,\nočitavanje podataka\niz QR koda
+mobapp --> webapp: Uspešan \npristup\nsistemu
+deactivate webapp
+deactivate mobapp
+...
+Korisnik -> webapp: Korišćenje sistema
+@enduml

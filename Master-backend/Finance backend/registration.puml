@@ -1,0 +1,26 @@
+@startuml
+actor Korisnik
+participant  "Web aplikacija" as webapp
+participant  "Mobilna aplikacija" as mobapp
+participant "Mail server (Gmail)" as mail
+autonumber
+Korisnik -> webapp: Registracija \n,odabir 2FA
+activate webapp
+webapp -> webapp: Generisanje \nQR koda
+activate webapp
+deactivate webapp
+
+Korisnik -> mobapp : Dodavanje \nnaloga,\nskeniranje \nQR koda
+activate mobapp
+mobapp -> mobapp : Validacija,\nočitavanje podataka\niz QR koda
+mobapp ->> mail : Slanje mail-a sa \nčetvorocifrenim \nkodom
+deactivate mobapp
+Korisnik -> mail: Preuzimanje \njedinstvenog\nkoda
+Korisnik -> mobapp: Unošenje \njedinstvenog\nkoda
+activate mobapp
+mobapp -> mobapp: Provera koda
+mobapp --> webapp: Uspešna \nregistracija
+deactivate webapp
+
+deactivate mobapp
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+skinparam actorStyle awesome
+actor Korisnik
+rectangle "Web aplikacije" as wb {
+    Korisnik -up--> (Registracija na sistem)
+    Korisnik -up-> (Pristupanje sistemu)
+    Korisnik -up-> (Korišćenje funkcionalnosti\n web aplikacije)
+}
+rectangle "Mobilna aplikacija" as ma {
+    Korisnik -down->  (Dodavanje naloga \n web aplikacije)
+    Korisnik -down->  (Skeniranje \nQR koda za \npristup web aplikaciji)
+    Korisnik -down-> (Unošenje 4-cifrenog \nkoda prilikom \nregistracije)
+}
+@enduml

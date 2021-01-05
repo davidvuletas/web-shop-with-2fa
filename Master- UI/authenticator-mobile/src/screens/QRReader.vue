@@ -57,14 +57,14 @@ export default {
           padding: 8
         },
         qr: {
-          marginTop: "20%",
+          marginTop: "10%",
           marginBottom: "20%",
           width: Dimensions.get("window").width * 0.8,
           height: Dimensions.get("window").height * 0.5
         },
         description: {
           fontSize: 25,
-          marginTop: "10%",
+          marginTop: "25%",
           textAlign: "center",
           width: "70%",
           color: "white"
@@ -74,7 +74,7 @@ export default {
           textAlign: "center",
           width: "50%",
           marginBottom: "5%",
-          color: "white"
+          color: "black"
         }
       },
       qrcodeLogo: qrcodelogo,
@@ -137,7 +137,7 @@ export default {
           }
         })
         .catch(function(error) {
-          console.log(error.response.message);
+          console.log(error);
           Alert.alert(
             "Failed",
             "Connection with server is not working",
